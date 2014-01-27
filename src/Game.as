@@ -4,6 +4,8 @@
 package {
 
 
+import flash.events.Event;
+
 import starling.display.Button;
 import starling.display.DisplayObject;
 import starling.display.Sprite;
@@ -20,19 +22,27 @@ public class Game extends Sprite{
 
 
     public function Game() {
+        addEventListener(starling.events.Event.ADDED_TO_STAGE, onAddedToStage)
+    }
 
+    private function onAddedToStage(event:starling.events.Event):void {
         assets = Assets.getInstance();
+        assets.fullScrHeight = stage.stageWidth;
+        assets.fullScrWidth = stage.stageHeight;
+        assets.addDmtEventListener(flash.events.Event.COMPLETE,onDmtComplete);
+        assets.initDMT();
+    }
 
+    private function onDmtComplete(event:flash.events.Event):void {
         var b:Button = new Button(Texture.fromBitmap(new Btn(),false),"Swap children");
         addChild(b)
 
         b.y = assets.fullScrHeight/2;
         b.x = assets.fullScrWidth/2;
-        b.addEventListener(Event.TRIGGERED,onBtnClicked);
+        b.addEventListener(starling.events.Event.TRIGGERED,onBtnClicked);
     }
 
-
-    private function onBtnClicked(event:Event):void {
+    private function onBtnClicked(event:starling.events.Event):void {
 
 
         //thats just code to go 1,2,3...--> 1,2,3 --> 1,2,3

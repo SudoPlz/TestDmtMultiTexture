@@ -39,7 +39,10 @@ public class Assets{
             throw new Error("Error: Instantiation failed: Use Assets.getInstance() instead of new.");
         }
         dispatcher = new EventDispatcher();
+    }
 
+    public function initDMT():void
+    {
         //init dmt
         dmt = new DMTBasic("HelloDMT",false);       //set use cache to true when done
         dmt.addEventListener(Event.COMPLETE, onDmtLoadComplete);

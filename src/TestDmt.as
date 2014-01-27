@@ -1,7 +1,5 @@
 package {
 
-import com.xtdstudios.DMT.DMTBasic;
-
 import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
@@ -9,8 +7,7 @@ import flash.events.Event;
 
 import starling.core.Starling;
 
-
-[SWF(frameRate="60", backgroundColor="#331022")]
+[SWF(frameRate="60", backgroundColor="#ffffff")]
 public class TestDmt extends Sprite {
 
     private var mStarling:Starling;
@@ -21,18 +18,15 @@ public class TestDmt extends Sprite {
         stage.scaleMode = StageScaleMode.NO_SCALE;
         stage.align = StageAlign.TOP_LEFT;
 
-        var assets:Assets = Assets.getInstance();
-        assets.fullScrHeight = stage.fullScreenHeight;
-        assets.fullScrWidth = stage.fullScreenWidth;
-        assets.addDmtEventListener(Event.COMPLETE,onDmtComplete);
-
-
+        stage.addEventListener(Event.RESIZE, onStageResized);
     }
 
-    private function onDmtComplete(event:Event):void {
-        mStarling = new Starling(Game, stage);
-        mStarling.start();
+    private function onStageResized(event:Event):void {
+        trace("onStageResized", stage.stageWidth, stage.stageHeight)
+        if (!mStarling) {
+            mStarling = new Starling(Game, stage);
+            mStarling.start();
+        }
     }
-
 }
 }
