@@ -4,6 +4,7 @@ import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.events.Event;
+import flash.utils.setTimeout;
 
 import starling.core.Starling;
 
@@ -18,15 +19,16 @@ public class TestDmt extends Sprite {
         stage.scaleMode = StageScaleMode.NO_SCALE;
         stage.align = StageAlign.TOP_LEFT;
 
-        stage.addEventListener(Event.RESIZE, onStageResized);
+//        stage.addEventListener(Event.RESIZE, onStageResized);
+        setTimeout(initApp,100);
     }
 
-    private function onStageResized(event:Event):void {
-        trace("onStageResized", stage.stageWidth, stage.stageHeight)
-        if (!mStarling) {
-            mStarling = new Starling(Game, stage);
-            mStarling.start();
-        }
+    private function initApp():void
+    {
+        mStarling = new Starling(Game,stage);
+        mStarling.showStats=true;
+        mStarling.start();
     }
+
 }
 }

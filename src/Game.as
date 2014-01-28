@@ -19,6 +19,7 @@ public class Game extends Sprite{
 
     [Embed(source="../assets/btn.png")]
     public static const Btn:Class;
+    private var b:Button;
 
 
     public function Game() {
@@ -34,11 +35,11 @@ public class Game extends Sprite{
     }
 
     private function onDmtComplete(event:flash.events.Event):void {
-        var b:Button = new Button(Texture.fromBitmap(new Btn(),false),"Swap children");
+        b = new Button(Texture.fromBitmap(new Btn(),false),"Swap");
         addChild(b)
 
         b.y = assets.fullScrHeight/2;
-        b.x = assets.fullScrWidth/2;
+        b.x = 0;
         b.addEventListener(starling.events.Event.TRIGGERED,onBtnClicked);
     }
 
@@ -49,13 +50,12 @@ public class Game extends Sprite{
         testI++
         if (testI>3)
             testI = 1;
-
-
         var disp:DisplayObject = assets.getDmtObj("ft$1_PlayScreen_page$"+testI.toString()+"_img$1");
-
         disp.width = disp.width/testI;
-        removeChildAt(0,true);
+        trace("Page "+testI.toString());
+        removeChildren();
         addChildAt(disp,0);
+        addChildAt(b,1);
 
     }
 }

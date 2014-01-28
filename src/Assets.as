@@ -22,6 +22,8 @@ import starling.textures.Texture;
 
 public class Assets{
 
+    public static const DEFUALT_ASSET_WIDTH:int = 2048;
+    public static const DEFUALT_ASSET_HEIGHT:int = 1536;
 
     private static var instance:Assets;
     private static var allowInstantiation:Boolean;
@@ -32,6 +34,8 @@ public class Assets{
 
     private var _fullScrWidth:uint;
     private var _fullScrHeight:uint;
+    private var _xScale:Number;
+    private var _yScale:Number;
 
 
     public function Assets() {
@@ -43,6 +47,10 @@ public class Assets{
 
     public function initDMT():void
     {
+        _xScale = _fullScrWidth/DEFUALT_ASSET_WIDTH;
+        trace("Asset ratio is: 1:"+_xScale);
+        _yScale = _fullScrHeight/DEFUALT_ASSET_HEIGHT;
+
         //init dmt
         dmt = new DMTBasic("HelloDMT",false);       //set use cache to true when done
         dmt.addEventListener(Event.COMPLETE, onDmtLoadComplete);
@@ -58,6 +66,8 @@ public class Assets{
         queue.load();
 
 
+
+
     }
 
     //file loader functions
@@ -70,9 +80,16 @@ public class Assets{
         var content:flash.display.Sprite= objects[0].rawContent as flash.display.Sprite;     // This ONLY works on mobile devices..!
 
         var obj:Sprite= content.getChildByName("ft$1_PlayScreen_page$1_img$1") as Sprite;
-        if (obj.numChildren==1)
-            dmt.addItemToRaster(obj,obj.name);
+        resizeAssets(obj);
+        dmt.addItemToRaster(obj,obj.name);
 
+        var obj:Sprite= content.getChildByName("ft$1_PlayScreen_page$2_img$1") as Sprite;
+        resizeAssets(obj);
+        dmt.addItemToRaster(obj,obj.name);
+
+        var obj:Sprite= content.getChildByName("ft$1_PlayScreen_page$3_img$1") as Sprite;
+        resizeAssets(obj);
+        dmt.addItemToRaster(obj,obj.name);
 
         trace(obj.name);
         dmt.process();
@@ -114,6 +131,12 @@ public class Assets{
             allowInstantiation = false;
         }
         return instance;
+    }
+
+    private function resizeAssets(asset:flash.display.DisplayObject):void
+    {
+        asset.scaleX = _xScale;
+        asset.scaleY = _yScale;
     }
 
     public function get fullScrWidth():uint {
