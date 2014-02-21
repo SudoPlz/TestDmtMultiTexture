@@ -18,7 +18,7 @@
           <files-to-package>
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/assets" path-in-package="assets" />
           </files-to-package>
-          <AirSigningOptions sdk="/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk" keystore-path="$USER_HOME$/Documents/Certificates/MyP12.p12" provisioning-profile-path="$USER_HOME$/Documents/Certificates/GenericSoftweb/iOS_Team_Provisioning_Profile_grsoftweb.mobileprovision" />
+          <AirSigningOptions sdk="/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk" keystore-path="$USER_HOME$/Documents/Certificates/Generic/MyP12.p12" provisioning-profile-path="$USER_HOME$/Documents/Certificates/Generic/Generic * .mobileprovision" />
         </packaging-ios>
       </configuration>
     </configurations>

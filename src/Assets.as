@@ -5,6 +5,7 @@ package {
 import com.greensock.events.LoaderEvent;
 import com.greensock.loading.LoaderMax;
 import com.greensock.loading.SWFLoader;
+import com.greensock.loading.display.ContentDisplay;
 import com.xtdstudios.DMT.DMTBasic;
 
 import flash.display.DisplayObject;
@@ -61,7 +62,10 @@ public class Assets{
         /*   This loads just fine, dont touch the swf directory.
         If it cant load, its probably because you haven't included the assets folder in project properties
          so the assets folder does not get in the mobile device AT ALL ..! */
-        queue.append(new SWFLoader("app:/assets/robot.swf", {name:"robot" ,  estimatedBytes:2050 , alpha:0, scaleMode:"proportionalInside"}));
+
+        queue.append(new SWFLoader("app:/assets/robot.swf", {name:"whatever" ,  estimatedBytes:2050 , alpha:0}));
+        //width:_fullScrWidth, height:_fullScrHeight, scaleMode:"proportionalInside" //other possible options
+
         //load swf
         queue.load();
 
@@ -76,24 +80,71 @@ public class Assets{
 
     private function completeHandler(e:LoaderEvent):void {
         trace("File load complete");
-        var objects:Array = e.currentTarget.content;
-        var content:flash.display.Sprite= objects[0].rawContent as flash.display.Sprite;     // This ONLY works on mobile devices..!
+//        var objects:Array = e.currentTarget.content;
+//        var content:flash.display.Sprite= objects[0].rawContent as flash.display.Sprite;     // This ONLY works on mobile devices..!
 
-        var obj:Sprite= content.getChildByName("ft$1_PlayScreen_page$1_img$1") as Sprite;
-        resizeAssets(obj);
-        dmt.addItemToRaster(obj,obj.name);
 
-        var obj:Sprite= content.getChildByName("ft$1_PlayScreen_page$2_img$1") as Sprite;
-        resizeAssets(obj);
-        dmt.addItemToRaster(obj,obj.name);
 
-        var obj:Sprite= content.getChildByName("ft$1_PlayScreen_page$3_img$1") as Sprite;
-        resizeAssets(obj);
-        dmt.addItemToRaster(obj,obj.name);
+        //VECTORS !!!!!!
+        var loader:SWFLoader = e.currentTarget.getLoader("whatever");
+//        trace(loader.rawContent);
+//        var con:ContentDisplay = loader.content;
+//        trace(con.width + " - "+con.height);
+//        con.numChildren;
+//        var child:flash.display.DisplayObject = con.getChildByName("ft$1_PlayScreen_page$0_img$0");
+//        trace(child.width + " - "+child.height);
+//        con.fitHeight = 1536;
+//        con.fitWidth = 2048;
+//        var child:flash.display.DisplayObject = con.getChildByName("ft$1_PlayScreen_page$0_img$0");
+//        trace(child.width + " - "+child.height);
 
-        trace(obj.name);
+
+        var taleName:String = "ft$1";
+
+
+        //Play Screen
+        for (var pageId:uint = 0;pageId<22;pageId++)    //for each page
+        {
+            //get imgs and movieclips
+            getAllAssetsForScreen(loader,taleName,"PlayScreen","_page$"+pageId.toString(),onAssetFound);
+        }
+
+        function getAllAssetsForScreen(provider:SWFLoader,taleName:String, screenName:String,assetPrefix:String, onAssetFound:Function):void
+        {
+            //get imgs
+            requestAssetsTillNull(provider,taleName+"_"+screenName+assetPrefix+"_img$",function (objectFound:flash.display.DisplayObject):void{
+                onAssetFound(objectFound);
+            });
+            //get movieclips
+            requestAssetsTillNull(provider,taleName+"_"+screenName+assetPrefix+"_mc$",function (objectFound:flash.display.DisplayObject):void{
+                onAssetFound(objectFound);
+            });
+        }
+        function requestAssetsTillNull(provider:SWFLoader, requestString:String, onObjFound:Function):void
+        {
+            var firstObj:uint = 0;
+            var curObject:flash.display.DisplayObject;
+
+            curObject = provider.getSWFChild(requestString+firstObj.toString());     //ft$1_WelcomeScreen_img$1
+            while (curObject!=null)
+            {
+                onObjFound(curObject);
+                firstObj++;
+                curObject = provider.getSWFChild(requestString+firstObj.toString());
+            }
+        }
+
         dmt.process();
     }
+
+    private function onAssetFound(assetFound:flash.display.DisplayObject):void
+    {
+        trace("Loaded ok: "+assetFound.name);
+        resizeAssets(assetFound);
+        trace("");
+        dmt.addItemToRaster(assetFound,assetFound.name);
+    }
+
 
     private function onDmtLoadComplete(event:Event):void {
         dispatcher.dispatchEvent(new Event(Event.COMPLETE));
