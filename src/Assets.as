@@ -65,6 +65,7 @@ public class Assets{
 
         queue.append(new SWFLoader("app:/assets/robot.swf", {name:"whatever" ,  estimatedBytes:2050 , alpha:0}));
         //width:_fullScrWidth, height:_fullScrHeight, scaleMode:"proportionalInside" //other possible options
+        // you can find out more about SwfLoader here: http://www.greensock.com/as/docs/tween/com/greensock/loading/SWFLoader.html
 
         //load swf
         queue.load();
@@ -81,27 +82,13 @@ public class Assets{
     private function completeHandler(e:LoaderEvent):void {
         trace("File load complete");
 //        var objects:Array = e.currentTarget.content;
-//        var content:flash.display.Sprite= objects[0].rawContent as flash.display.Sprite;     // This ONLY works on mobile devices..!
 
-
-
-        //VECTORS !!!!!!
+        //Lets get the swf loader !!!!!!
         var loader:SWFLoader = e.currentTarget.getLoader("whatever");
-//        trace(loader.rawContent);
-//        var con:ContentDisplay = loader.content;
-//        trace(con.width + " - "+con.height);
-//        con.numChildren;
-//        var child:flash.display.DisplayObject = con.getChildByName("ft$1_PlayScreen_page$0_img$0");
-//        trace(child.width + " - "+child.height);
-//        con.fitHeight = 1536;
-//        con.fitWidth = 2048;
-//        var child:flash.display.DisplayObject = con.getChildByName("ft$1_PlayScreen_page$0_img$0");
-//        trace(child.width + " - "+child.height);
+
 
 
         var taleName:String = "ft$1";
-
-
         //Play Screen
         for (var pageId:uint = 0;pageId<22;pageId++)    //for each page
         {
